@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+// pnpm replacement using Node.js
+
+const { execSync } = require('child_process');
+const args = process.argv.slice(2);
+
+console.log(`pnpm wrapper: ${args.join(' ')}`);
+
+try {
+    switch (args[0]) {
+        case 'install':
+            execSync('npm install', { stdio: 'inherit' });
+            break;
+        case 'build':
+            execSync('npm run build', { stdio: 'inherit' });
+            break;
+        case 'run':
+            execSync(`npm run ${args.slice(1).join(' ')}`, { stdio: 'inherit' });
+            break;
+        case 'add':
+            execSync(`npm install ${args.slice(1).join(' ')}`, { stdio: 'inherit' });
+            break;
+        case 'remove':
+            execSync(`npm uninstall ${args.slice(1).join(' ')}`, { stdio: 'inherit' });
+            break;
+        default:
+            execSync(`npm ${args.join(' ')}`, { stdio: 'inherit' });
+            break;
+    }
+} catch (error) {
+    process.exit(error.status || 1);
+}

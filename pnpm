@@ -1,0 +1,26 @@
+#!/bin/bash
+# Global pnpm wrapper that can be called from any directory
+
+cd "$1" || exit 1
+shift
+
+case "$1" in
+    "install")
+        npm install
+        ;;
+    "build")
+        npm run build
+        ;;
+    "run")
+        npm run "${@:2}"
+        ;;
+    "add")
+        npm install "${@:2}"
+        ;;
+    "remove")
+        npm uninstall "${@:2}"
+        ;;
+    *)
+        npm "$@"
+        ;;
+esac
